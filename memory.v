@@ -26,7 +26,7 @@ output  [31:0]  data_out;
 wire mem_read1;
 
 // Memory is byte-addressable, instructions are word-aligned
-// Memory with 2k 8-bit 
+// Memory with 2k 8-bit
 // Data address range: 0x0000 ~ 0x0FFC
 // Instruction address range: 0x1000 ~ 0x1FFC
 parameter MEM_SIZE=32'h00002000;
@@ -41,10 +41,10 @@ reg [31:0] data_addr_reg, inst_addr_reg;
 reg [12*8:1] rest;
 initial
     begin : file_block
-      
+
 //	for(i=0; i<2048; i=i+1) begin
 //		memory[i] = 8'b0;
-//	end    
+//	end
 
     file = $fopen("matrix.hexdump","r");
     if (file == `NULL)
@@ -73,7 +73,7 @@ begin
         #1 memory[data_addr+3] <= data_in[31:24];
         #1 memory[data_addr+2] <= data_in[23:16];
         #1 memory[data_addr+1] <= data_in[15:8];
-        #1 memory[data_addr]   <= data_in[7:0];	
+        #1 memory[data_addr]   <= data_in[7:0];
 end
 
 // Read instruction
