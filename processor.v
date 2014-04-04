@@ -10,7 +10,7 @@ module processor(clk);
     reg [4:0] RegDst_inA, RegDest_inB;
     reg [4:0] rAddrA, rAddrB;
     output [4:0] wAddr;
-    reg [31:0] wData;
+    output[31:0] wData;
     output [31:0] rDataA, rDataB;
     reg [15:0] imm;
     output [31:0] imm_extend;
@@ -24,7 +24,7 @@ module processor(clk);
     reg [31:0] MemToRegA, MemToRegB;
     wire [3:0] ALU_ctr_out;
     output [31:0] rMemData;
-    output [31:0] Memto;
+
     reg32_32 regsister(rAddrA, rDataA, rAddrB, rDataB, wAddr, wData, writeEn, clk);
     ctrl control(opcode, control_logic);
     twoToOneMux_5 RegDst(RegDst_inA, RegDest_inB, regDst_sel, wAddr);
@@ -34,7 +34,8 @@ module processor(clk);
 
     ALU ALU_unit(ALU_ctrl, rDataA, ALUsrc_out, ALU_out, zero);
     ALUCtrl ALU_ctrl_unit(func_code, ALU_op, ALU_ctr_out);
-    Memory data_memory(pc, instruction, ALU_out, rDataB, MemWrite_sel, Memto);
+    Memory data_memory(pc, instruction, ALU_out, rDataB, memRead_sel, MemWrite_sel, rMemData);
+    assign pc = 0;
     always @(posedge clk)
     begin
         opcode = instruction[31:26];
@@ -63,7 +64,6 @@ module processor(clk);
         imm = instruction[15:0];
 
         func_code = instruction[5:0];
-
 
     end
 
