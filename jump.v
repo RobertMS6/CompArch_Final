@@ -14,12 +14,9 @@ module jump(instruction, pc, zero, branch_sel, jump_sel);
     always @* begin
         pcTemp = pc + 4;
         instrTemp = instruction[15:0];
-        // signExtend bTemp(instrTemp, bInstr);
         bInstrTemp = (bInstr << 2) + pcTemp;
         branch_ctl = zero & branch_sel;
-        // twoToOneMux_32 branchMux(pcTemp, bInstrTemp, branch_ctl, addrTemp);
         jInstrTemp = {{31{jInstr[0]}}, instruction[25:0] << 2};
-        // twoToOneMux_32 jumpMux(addrTemp, jInstrTemp, jump_sel, newPC);
     end
 
 endmodule
