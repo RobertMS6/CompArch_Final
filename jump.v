@@ -1,4 +1,4 @@
-module jump(instruction, pc, zero, branch_sel, jump_sel);
+module jump(instruction, pc, zero, branch_sel, jump_sel, newPC);
     input [31:0] instruction, pc;
     input [0:0] zero, branch_sel, jump_sel;
     reg [0:0] branch_ctl;

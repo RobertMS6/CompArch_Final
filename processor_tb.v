@@ -1,4 +1,4 @@
-//`timescale 1 ns /100 ps
+//  `timescale 1 ns /100 ps
 module processor_tb();
     reg clk;
     processor test(clk);
@@ -8,7 +8,7 @@ module processor_tb();
         $dumpfile("processor.vcd");
         $dumpvars(0, test);
 
-         $finish;
+
     end
 
 

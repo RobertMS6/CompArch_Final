@@ -1,6 +1,6 @@
 module processor(clk);
-    output [31:0] instruction;
     input clk;
+    output [31:0] instruction;
     output reg [31:0] pc;
     wire [9:0] control_logic;
     reg [5:0]opcode;
