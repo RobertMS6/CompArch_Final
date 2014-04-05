@@ -1,4 +1,4 @@
-module reg32_32 (rAddrA, rDataA, rAddrB, rDataB, wAddr, wData, writeEn, clk);
+module reg32_32 (rAddrA, rDataA, rAddrB, rDataB, wAddr, wData, writeEn);
     input [4:0] rAddrA, rAddrB, wAddr;
     input [0:0] writeEn;
     input clk;

@@ -35,14 +35,13 @@ integer i;
 integer file, r;
 
 reg     [7:0] memory  [0:MEM_SIZE-1];
-
 reg [31:0] data_addr_reg, inst_addr_reg;
 
 reg [12*8:1] rest;
 initial
     begin : file_block
 
-//	for(i=0; i<2048; i=i+1) begin
+//	for(i=0; i<2048; i=i+1) beginp
 //		memory[i] = 8'b0;
 //	end
 

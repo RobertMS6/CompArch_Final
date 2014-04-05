@@ -1,7 +1,7 @@
 module processor(clk);
     output [31:0] instruction;
     input clk;
-    output [31:0] pc;
+    output reg [31:0] pc;
     wire [9:0] control_logic;
     reg [5:0]opcode;
     reg regDst_sel, jump_sel, branch_sel, memRead_sel, MemtoReg_sel, MemWrite_sel, ALUsrc_sel, RegWrite_sel;
@@ -19,23 +19,23 @@ module processor(clk);
     reg [31:0] ALU_inA, ALU_inB;
     output [31:0] ALU_out;
     output zero;
-    reg [3:0]ALU_ctrl;
     reg [5:0] func_code;
     reg [31:0] MemToRegA, MemToRegB;
-    wire [3:0] ALU_ctr_out;
+    output [3:0] ALU_ctr_out;
     output [31:0] rMemData;
+    output [31:0] newPC;
 
-    reg32_32 regsister(rAddrA, rDataA, rAddrB, rDataB, wAddr, wData, writeEn, clk);
+    reg32_32 regsister(rAddrA, rDataA, rAddrB, rDataB, wAddr, wData, RegWrite_sel);
     ctrl control(opcode, control_logic);
     twoToOneMux_5 RegDst(RegDst_inA, RegDest_inB, regDst_sel, wAddr);
     twoToOneMux_32 MemtoReg(ALU_out, rMemData, MemtoReg_sel, wData);
     twoToOneMux_32 ALUsrc(rDataB, imm_extend,  ALUsrc_sel, ALUsrc_out);
     signExtend immediate(imm, imm_extend);
 
-    ALU ALU_unit(ALU_ctrl, rDataA, ALUsrc_out, ALU_out, zero);
+    ALU ALU_unit(ALU_ctr_out, rDataA, ALUsrc_out, ALU_out, zero);
     ALUCtrl ALU_ctrl_unit(func_code, ALU_op, ALU_ctr_out);
     Memory data_memory(pc, instruction, ALU_out, rDataB, memRead_sel, MemWrite_sel, rMemData);
-    assign pc = 0;
+    jump j(instruction, pc, zero, branch_sel, jump_sel);
     always @(posedge clk)
     begin
         opcode = instruction[31:26];
@@ -64,8 +64,10 @@ module processor(clk);
         imm = instruction[15:0];
 
         func_code = instruction[5:0];
+        assign pc = newPC;
 
-    end
+
+end
 
 
 endmodule

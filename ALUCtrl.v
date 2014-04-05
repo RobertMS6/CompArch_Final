@@ -3,6 +3,7 @@ module ALUCtrl (funct, ALUop, out);
     input [1:0] ALUop;
     output reg [3:0] out;
 
+
     always @(ALUop | funct) begin
         case(ALUop)
             2'b00 : out = 4'b0010; //addi, lw, sw
