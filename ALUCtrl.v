@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module ALUCtrl (funct, ALUop, out);
     input [5:0] funct;
     input [1:0] ALUop;

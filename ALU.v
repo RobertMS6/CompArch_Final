@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module ALU (ALUCtrl, inA, inB, ALUResult, zero);
     input [3:0] ALUCtrl;
     input [31:0] inA;

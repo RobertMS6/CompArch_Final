@@ -1,29 +1,35 @@
-module processor(clk);
-    input clk;
+`timescale 1ns/1ps
+
+module processor(clk, rst);
+    input clk, rst;
+
+    output [31:0] ALU_out;
+    output [31:0] ALUsrc_out;
+    output [31:0] imm_extend;
     output [31:0] instruction;
+    output [31:0] newPC;
+    output [31:0] rDataA, rDataB;
+    output [31:0] rMemData;
+    output [3:0] ALU_ctr_out;
+    output [4:0] wAddr;
+    output zero;
+    output[31:0] wData;
+
     output reg [31:0] pc;
-    wire [9:0] control_logic;
+
+    reg [15:0] imm;
+    reg [1:0] ALU_op;
+    reg [31:0] ALU_inA, ALU_inB;
+    reg [31:0] ALUsrcA, ALUsrcB;
+    reg [31:0] MemToRegA, MemToRegB;
+    reg [4:0] rAddrA, rAddrB;
+    reg [4:0] RegDst_inA, RegDest_inB;
+    reg [5:0] func_code;
     reg [5:0]opcode;
     reg regDst_sel, jump_sel, branch_sel, memRead_sel, MemtoReg_sel, MemWrite_sel, ALUsrc_sel, RegWrite_sel;
-    reg [1:0] ALU_op;
     reg writeEn;
-    reg [4:0] RegDst_inA, RegDest_inB;
-    reg [4:0] rAddrA, rAddrB;
-    output [4:0] wAddr;
-    output[31:0] wData;
-    output [31:0] rDataA, rDataB;
-    reg [15:0] imm;
-    output [31:0] imm_extend;
-    reg [31:0] ALUsrcA, ALUsrcB;
-    output [31:0] ALUsrc_out;
-    reg [31:0] ALU_inA, ALU_inB;
-    output [31:0] ALU_out;
-    output zero;
-    reg [5:0] func_code;
-    reg [31:0] MemToRegA, MemToRegB;
-    output [3:0] ALU_ctr_out;
-    output [31:0] rMemData;
-    output [31:0] newPC;
+
+    wire [9:0] control_logic;
 
     reg32_32 regsister(rAddrA, rDataA, rAddrB, rDataB, wAddr, wData, RegWrite_sel);
     ctrl control(opcode, control_logic);
@@ -34,10 +40,10 @@ module processor(clk);
 
     ALU ALU_unit(ALU_ctr_out, rDataA, ALUsrc_out, ALU_out, zero);
     ALUCtrl ALU_ctrl_unit(func_code, ALU_op, ALU_ctr_out);
-    Memory data_memory(pc, instruction, ALU_out, rDataB, memRead_sel, MemWrite_sel, rMemData);
-    jump j(instruction, pc, zero, branch_sel, jump_sel);
-    always @(posedge clk)
-    begin
+    jump j(instruction, pc, zero, branch_sel, jump_sel, rst, newPC);
+    Memory data_memory(newPC, instruction, ALU_out, rDataB, memRead_sel, MemWrite_sel, rMemData);
+
+    always @(posedge clk) begin
         opcode = instruction[31:26];
         func_code = instruction[5:0];
         //output all control logic
@@ -65,8 +71,6 @@ module processor(clk);
 
         func_code = instruction[5:0];
         assign pc = newPC;
-
-
 end
 
 

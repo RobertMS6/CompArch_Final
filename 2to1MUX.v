@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module twoToOneMux (inA, inB, sel, out);
 
     // I/O Definitions

@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module ctrl (opcode, out);
     input [5:0] opcode;
     output reg [9:0] out;
