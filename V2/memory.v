@@ -1,8 +1,7 @@
-`timescale 1ns/1ps
-
 //=========================================================
 // Integrated Instruction/Data memory (seperate ports)
 //=========================================================
+`timescale 1ns/1ps
 `define EOF 32'hFFFF_FFFF
 `define NULL 0
 

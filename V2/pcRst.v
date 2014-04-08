@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+`timescale 1ns / 1ns
 
 module pcRst(
 input rst, clk,
@@ -15,3 +15,4 @@ always@(posedge clk, posedge rst)
     end
 
 endmodule
+

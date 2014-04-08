@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+`timescale 1ns / 1ns
 
 module processor(clk, rst);
     input clk, rst;
@@ -11,13 +11,6 @@ module processor(clk, rst);
     wire [0:0] zero;
     wire [31:0] instruction;
 
-    //Instruction Breakdown
-    assign opcode = instruction[31:26];
-    assign rAddrA = instruction[25:21];
-    assign rAddrB = instruction[20:16];
-    assign wAddr = instruction[15:11];
-    assign func_code = instruction[5:0];
-
     //Control Logic Lines
     wire regDst_sel;
     wire jump_sel;
@@ -28,6 +21,14 @@ module processor(clk, rst);
     wire MemWrite_sel;
     wire ALUsrc_sel;
     wire RegWrite_sel;
+
+    //Instruction Breakdown
+    assign opcode = instruction[31:26];
+    assign rAddrA = instruction[25:21];
+    assign rAddrB = instruction[20:16];
+    assign wAddr = instruction[15:11];
+    assign imm = instruction[15:0];
+    assign func_code = instruction[5:0];
 
     //Program Counter/Branch/Jump Logic
     pcRst PC(rst, clk, inPC, outPC);
@@ -41,10 +42,13 @@ module processor(clk, rst);
     //Processing Logic
     controlunit control_logic(opcode, regDst_sel, jump_sel, branch_sel, memRead_sel, MemtoReg_sel, ALU_op,  MemWrite_sel, ALUsrc_sel, RegWrite_sel);
     twoToOneMux_5 writeMux(rAddrB, wAddr, regDst_sel, wAddrMux);
-    reg_file register(rAddrA, rAddrB, wAddrMux, wData, RegWrite_sel, clk, rDataA, rDataB);
+
     signExtend immediate(imm, immExtended);
     twoToOneMux_32 ALUSrc(rDataB, immExtended, ALUsrc_sel, ALUSrc_out);
     alu_control ALUctrl(ALU_op, func_code, ALUctrl_op);
+
+    reg_file register(rAddrA, rAddrB, wAddrMux, wData, RegWrite_sel, clk, rst, rDataA, rDataB);
+
     alu ALU_unit(rDataA, ALUSrc_out, ALUctrl_op, ALU_out, zero);
     Memory memory_unit(outPC, instruction, ALU_out, rDataB, memRead_sel, MemWrite_sel, memory_out);
     twoToOneMux_32 memtoReg_mux(ALU_out, memory_out, MemtoReg_sel, wData);

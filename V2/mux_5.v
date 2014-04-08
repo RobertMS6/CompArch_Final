@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+`timescale 1ns / 1ns
 
 module twoToOneMux_5 (inA, inB, sel, out);
 
@@ -15,9 +15,9 @@ module twoToOneMux_5 (inA, inB, sel, out);
     // 0 for inA, 1 for inB
     always @* begin
         if (sel==1'b0) begin
-            out = inA;
+            out <= inA;
         end else begin
-            out = inB;
+            out <= inB;
         end
     end
 endmodule

@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+`timescale 1ns / 1ns
 
 module pcBranch(
 input [31:0] inPC, instruction,
@@ -13,9 +13,9 @@ signExtend bTemp(temp1, tempExt);
 
 always@*
     begin
-        temp1 = instruction[15:0];
-        temp2 = {tempExt[29:0], 2'b00};
-        branchAddr = temp2 + inPC;
+        temp1 <= instruction[15:0];
+        temp2 <= {tempExt[29:0], 2'b00};
+        branchAddr <= temp2 + inPC;
     end
 
 endmodule

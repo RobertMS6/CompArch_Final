@@ -15,7 +15,7 @@ cal:
     add   $r8, $r2, $r3    # a load-use stall occurs here, this is the use instruction
                            # followed by an MEM-Ex forwarding
     sw    $r8, $r24, matrix3  # needs X-X forwarding for this instruction 
-    addi  $r24, $r24, 4    # r24 = r24 + 4
+    addi  $r24, $r24, 4    # r24 <= r24 + 4
  
     add   $r15, $r0, $r0   # just to avoid a data hazard over a control instruction 
     add   $r15, $r0, $r0   # for the next instruction

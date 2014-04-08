@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+`timescale 1ns / 1ns
 
 module processor_tb();
     reg clk, rst;
@@ -9,13 +9,11 @@ module processor_tb();
         $dumpfile("processor.vcd");
         $dumpvars(0, CPU);
 
-        clk = 1'b0;
-        rst = 1'b1;
-        #1 rst = 1'b0;
-        #1000 $finish;
-
+        clk <= 1'b0;
+        rst <= 1'b1;
+        #10 rst <= 1'b0;
     end
 
-    always #10 clk = ~clk;
+    always #10 clk <= ~clk;
 
 endmodule
