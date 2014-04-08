@@ -3,6 +3,7 @@
 module controlunit (input [5:0] opcode,
                     output reg regdest, output reg jump, output reg branch, output reg memread,
                     output reg memtoreg, output reg[1:0] aluop, output reg memwrite, output reg alusrc, output reg regwrite);
+
   // These cases and outputs are taken from figure 4.22, P&H
   always @ (opcode) begin
     {regdest, alusrc, memtoreg, regwrite, memread, memwrite, branch, jump, aluop}<=10'b0000000000;
@@ -11,6 +12,12 @@ module controlunit (input [5:0] opcode,
         regdest <= 1;
         regwrite <= 1;
         aluop <= 2'b10;
+        end
+      6'b001000 : begin
+        alusrc <= 1;
+        aluop <= 2'b00;
+        regwrite <= 1;
+        regdest <= 1;
         end
       6'b100011: begin // lw
         alusrc <= 1;
