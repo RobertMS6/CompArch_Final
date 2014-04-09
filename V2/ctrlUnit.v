@@ -8,16 +8,17 @@ module controlunit (input [5:0] opcode,
   always @ (opcode) begin
     {regdest, alusrc, memtoreg, regwrite, memread, memwrite, branch, jump, aluop}<=10'b0000000000;
     case (opcode)
-      6'b000000 : begin // r-type, others are 0 by default
+      6'b000000 : begin // add r-type, others are 0 by default
         regdest <= 1;
         regwrite <= 1;
         aluop <= 2'b10;
+        alusrc <= 0;
         end
-      6'b001000 : begin
+      6'b001000 : begin //addi
         alusrc <= 1;
-        aluop <= 2'b00;
+        aluop <= 2'b10;
         regwrite <= 1;
-        regdest <= 1;
+        regdest <= 0;
         end
       6'b100011: begin // lw
         alusrc <= 1;
