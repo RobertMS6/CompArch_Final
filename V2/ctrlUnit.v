@@ -16,7 +16,7 @@ module controlunit (input [5:0] opcode,
         end
       6'b001000 : begin //addi
         alusrc <= 1;
-        aluop <= 2'b10;
+        aluop <= 2'b00;
         regwrite <= 1;
         regdest <= 0;
         end
