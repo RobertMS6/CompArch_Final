@@ -1,8 +1,12 @@
 `timescale 1ns / 1ns
 
-module processor(clk, rst);
-    input clk, rst;
-
+module processor(
+    input clk,
+    input rst,
+    input [31:0] cycles,
+    input [31:0] instructions
+);
+    //Intermediate Wires
     wire [31:0] inPC, outPC, outPCadd, outPCbranch, outPCjump, pcTemp, wData, rDataA, rDataB, immExtended, ALUSrc_out, ALU_out, memory_out;
     wire [15:0] imm;
     wire [5:0] opcode, func_code;
@@ -42,16 +46,12 @@ module processor(clk, rst);
     //Processing Logic
     controlunit control_logic(opcode, regDst_sel, jump_sel, branch_sel, memRead_sel, MemtoReg_sel, ALU_op,  MemWrite_sel, ALUsrc_sel, RegWrite_sel);
     twoToOneMux_5 writeMux(rAddrB, wAddr, regDst_sel, wAddrMux);
-
     signExtend immediate(imm, immExtended);
     twoToOneMux_32 ALUSrc(rDataB, immExtended, ALUsrc_sel, ALUSrc_out);
     alu_control ALUctrl(ALU_op, func_code, ALUctrl_op);
-
     reg_file register(rAddrA, rAddrB, wAddrMux, wData, RegWrite_sel, clk, rst, rDataA, rDataB);
-
     alu ALU_unit(rDataA, ALUSrc_out, ALUctrl_op, ALU_out, zero);
     Memory memory_unit(outPC, instruction, ALU_out, rDataB, memRead_sel, MemWrite_sel, memory_out);
     twoToOneMux_32 memtoReg_mux(ALU_out, memory_out, MemtoReg_sel, wData);
-
 
 endmodule

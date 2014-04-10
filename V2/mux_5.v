@@ -1,18 +1,12 @@
 `timescale 1ns / 1ns
 
-module twoToOneMux_5 (inA, inB, sel, out);
+module twoToOneMux_5(
+    input[4:0] inA,
+    input[4:0] inB,
+    input[0:0] sel,
+    output reg[4:0] out
+);
 
-    // I/O Definitions
-    input [4:0] inA;
-    input [4:0] inB;
-    input [0:0] sel;
-    output [4:0] out;
-
-    wire inA, inB, sel;
-    reg out;
-
-    // Select logic
-    // 0 for inA, 1 for inB
     always @* begin
         if (sel==1'b0) begin
             out <= inA;
@@ -20,4 +14,5 @@ module twoToOneMux_5 (inA, inB, sel, out);
             out <= inB;
         end
     end
+
 endmodule

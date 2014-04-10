@@ -35,7 +35,7 @@ parameter MEM_SIZE=32'h00002000;
 integer i;
 integer file, r;
 
-reg     [7:0] memory  [0:MEM_SIZE-1];
+reg [7:0] memory [0:MEM_SIZE-1];
 
 reg [31:0] data_addr_reg, inst_addr_reg;
 
